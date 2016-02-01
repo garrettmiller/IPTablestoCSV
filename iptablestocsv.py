@@ -47,7 +47,8 @@ for line in file.readlines():
     try:  #Use a try block in case not all elements are always there
         writer.writerow({'IN': data['IN'], 'PHYSIN': data['PHYSIN'], 'OUT': data['OUT'], 'PHYSOUT': data['PHYSOUT'], 
        'SRC': data['SRC'], 'DST': data['DST'], 'LEN': data['LEN'], 'TOS': data['TOS'], 'PREC': data['PREC'], 
-       'SPT': data['SPT'], 'DPT': data['DPT'], 'WINDOW': data['WINDOW'], 'RES': data['RES'], 'URGP': data['URGP']})
+       'TTL': data['TTL'], 'ID': data['ID'], 'PROTO': data['PROTO'], 'SPT': data['SPT'], 'DPT': data['DPT'], 
+       'WINDOW': data['WINDOW'], 'RES': data['RES'], 'URGP': data['URGP']})
     except KeyError:
         continue
 #Close file
