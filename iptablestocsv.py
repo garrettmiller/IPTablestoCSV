@@ -24,7 +24,8 @@ else: #Or get it interactively
     outfile = raw_input("Please enter a path for an output CSV file: ")
 
 #Open CSV file for writing
-fieldnames = ['IN', 'PHYSIN', 'OUT', 'PHYSOUT', 'SRC', 'DST', 'LEN', 'TOS', 'PREC', 'TTL', 'ID', 'PROTO', 'SPT', 'DPT', 'WINDOW', 'RES', 'URGP']
+fieldnames = ['IN', 'PHYSIN', 'OUT', 'PHYSOUT', 'SRC', 'DST', 'LEN', 'TOS', 'PREC', 
+'TTL', 'ID', 'PROTO', 'SPT', 'DPT', 'WINDOW', 'RES', 'URGP']
 writer = csv.DictWriter(open(outfile, "wb"), fieldnames=fieldnames, delimiter=',')
 writer.writeheader()
 
@@ -44,7 +45,9 @@ for line in file.readlines():
     ################
 
     try:  #Use a try block in case not all elements are always there
-        writer.writerow({'IN': data['IN'], 'PHYSIN': data['PHYSIN'], 'OUT': data['OUT'], 'PHYSOUT': data['PHYSOUT'], 'SRC': data['SRC'], 'DST': data['DST'], 'LEN': data['LEN'], 'TOS': data['TOS'], 'PREC': data['PREC'], 'SPT': data['SPT'], 'DPT': data['DPT'], 'WINDOW': data['WINDOW'], 'RES': data['RES'], 'URGP': data['URGP']})
+        writer.writerow({'IN': data['IN'], 'PHYSIN': data['PHYSIN'], 'OUT': data['OUT'], 'PHYSOUT': data['PHYSOUT'], 
+       'SRC': data['SRC'], 'DST': data['DST'], 'LEN': data['LEN'], 'TOS': data['TOS'], 'PREC': data['PREC'], 
+       'SPT': data['SPT'], 'DPT': data['DPT'], 'WINDOW': data['WINDOW'], 'RES': data['RES'], 'URGP': data['URGP']})
     except KeyError:
         continue
 #Close file
