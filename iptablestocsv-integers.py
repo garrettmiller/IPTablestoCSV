@@ -1,7 +1,8 @@
 #!/usr/bin/python
 ##############################################
-#iptablestocsv.py
+#iptablestocsv-integers.py
 #Converts IPTables logfiles to CSV data
+#"-integers" adds column for IPs as integers.
 #2016 Garrett Miller
 #Carnegie Mellon University
 #
@@ -23,8 +24,8 @@ else: #Or get it interactively
     outfile = raw_input("Please enter a path for an output CSV file: ")
 
 #Open CSV file for writing
-fieldnames = ['IN', 'PHYSIN', 'OUT', 'PHYSOUT', 'SRC', 'DST', 'LEN', 'TOS', 'PREC', 
-'TTL', 'ID', 'PROTO', 'SPT', 'DPT', 'WINDOW', 'RES', 'URGP']
+fieldnames = ['IN', 'PHYSIN', 'OUT', 'PHYSOUT', 'SRC','SRC-INT', 'DST', 'DST-INT',
+ 'LEN', 'TOS', 'PREC', 'TTL', 'ID', 'PROTO', 'SPT', 'DPT', 'WINDOW', 'RES', 'URGP']
 writer = csv.DictWriter(open(outfile, "wb"), fieldnames=fieldnames, delimiter=',')
 writer.writeheader()
 
@@ -38,6 +39,21 @@ for line in file.readlines():
     line = line.rstrip()  # Removes final spaces and newlines
     data = dict(pair_re.findall(line))  # Fetches all the KEY=value pairs and puts them in a dictionary
 
+    #Convert IP addresses to integers
+    #Use a try block in case not all elements are always there
+    try:  
+        srcip = data['SRC']
+    except KeyError:
+        continue
+    try:
+        destip = data['DST']
+    except KeyError:
+        continue
+    srcparts = srcip.split('.')
+    destparts = destip.split('.')
+    srcipint = (int(srcparts[0]) << 24) + (int(srcparts[1]) << 16) + (int(srcparts[2]) << 8) + int(srcparts[3])
+    destipint = (int(destparts[0]) << 24) + (int(destparts[1]) << 16) + (int(destparts[2]) << 8) + int(destparts[3])
+
     ################
     #Debug - print to see output, leave commented for faster running
     #print data
@@ -45,9 +61,9 @@ for line in file.readlines():
 
     try:  #Use a try block in case not all elements are always there
         writer.writerow({'IN': data['IN'], 'PHYSIN': data['PHYSIN'], 'OUT': data['OUT'], 'PHYSOUT': data['PHYSOUT'], 
-       'SRC': data['SRC'], 'DST': data['DST'], 'LEN': data['LEN'], 'TOS': data['TOS'], 'PREC': data['PREC'], 
-       'TTL': data['TTL'], 'ID': data['ID'], 'PROTO': data['PROTO'], 'SPT': data['SPT'], 'DPT': data['DPT'], 
-       'WINDOW': data['WINDOW'], 'RES': data['RES'], 'URGP': data['URGP']})
+        'SRC': data['SRC'], 'SRC-INT': srcipint, 'DST': data['DST'], 'DST-INT': destipint, 'LEN': data['LEN'], 
+        'TOS': data['TOS'], 'PREC': data['PREC'], 'TTL': data['TTL'], 'ID': data['ID'], 'PROTO': data['PROTO'], 
+        'SPT': data['SPT'], 'DPT': data['DPT'], 'WINDOW': data['WINDOW'], 'RES': data['RES'], 'URGP': data['URGP']})
     except KeyError:
         continue
 #Close file
