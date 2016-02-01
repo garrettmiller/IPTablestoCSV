@@ -1,7 +1,9 @@
 # IPTables to CSV
 
 Garrett Miller
+
 Spring 2016
+
 Carnegie Mellon University
 
 iptablestocsv.py - Converts an IPTables log to CSV for other types of analysis.  Additions/comments welcome.
